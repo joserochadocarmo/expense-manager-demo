@@ -21,6 +21,8 @@ Once installed, make sure that the `location` attribute is correct on the `<pouc
 
 ## Install dependencies
 You need polymer-cli installed to build the app `npm install -g polymer-cli`
+Run npm install && bower install
+
 
 ## Run development server
 `polymer serve` will run the application locally
