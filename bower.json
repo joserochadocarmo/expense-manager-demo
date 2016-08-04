@@ -19,7 +19,11 @@
     "paper-checkbox": "polymerelements/paper-checkbox#^1.2.0",
     "qr-js": "^1.1.4",
     "paper-dialog": "polymerelements/paper-dialog#^1.0.4",
-    "iron-pages": "polymerelements/iron-pages#^1.0.7"
+    "iron-pages": "polymerelements/iron-pages#^1.0.7",
+    "iron-localstorage": "^1.0.6",
+    "font-awesome": "^4.6.3",
+    "numeral": "^1.5.3",
+    "moment": "^2.14.1"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
