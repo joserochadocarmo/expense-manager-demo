@@ -13,74 +13,74 @@
             flex-direction: column;
             background: #fff;
         }
-        
+
         #add-button {
             position: absolute;
             right: 32px;
             bottom: 32px;
             z-index: 2;
         }
-        
+
         @media (max-width: 1124px) {
             #add-button {
                 bottom: -28px;
             }
         }
-        
+
         @media (min-width: 1125px) {
             #add-button {
                 bottom: auto;
                 top: -29px;
             }
         }
-        
+
         @media (max-width: 900px) {
             #add-button {
                 bottom: 32px;
             }
         }
-        
+
         #expenses {
             flex: 1;
             color: var(--primary-text-color);
         }
-        
+
         @media (max-width: 1124px) {
             #expenses {
                 font-size: 15px;
             }
         }
-        
+
         #expenses /deep/ thead.vaadin-grid-header {
             box-shadow: 0 -9px 2px 10px rgba(0, 0, 0, 0.1), 0 -8px 3px 10px rgba(204, 204, 204, 0.20);
         }
-        
+
         #expenses /deep/ thead.vaadin-grid-header th {
             text-transform: uppercase;
             font-size: 12px;
             font-weight: 500;
             color: var(--primary-text-color);
         }
-        
+
         vaadin-grid /deep/ .total {
             flex-direction: row-reverse;
         }
-        
+
         vaadin-grid /deep/ td.status-new {
             color: var(--accent-color);
             font-weight: 500;
         }
-        
+
         vaadin-grid /deep/ td.status-in_progress {
             font-weight: 500;
             font-style: italic;
             text-transform: capitalize;
         }
-        
+
         vaadin-grid /deep/ td.comment {
             position: relative;
         }
-        
+
         vaadin-grid /deep/ td.comment span {
             width: 100%;
             position: absolute;
@@ -89,7 +89,7 @@
             padding-right: 35px;
             box-sizing: border-box;
         }
-        
+
         #expenses /deep/ .vaadin-grid-header [class*="sort-"]:after {
             content: "";
             border-width: 5px;
@@ -100,12 +100,12 @@
             min-width: 0;
             margin: 0 10px;
         }
-        
+
         #expenses /deep/ .vaadin-grid-header.vaadin-grid .sort-desc.vaadin-grid:after {
             border-top-color: var(--accent-color);
             transform: translateY(25%);
         }
-        
+
         #expenses /deep/ .vaadin-grid-header.vaadin-grid .sort-asc.vaadin-grid:after {
             border-bottom-color: var(--accent-color);
             transform: translateY(-25%);
@@ -116,7 +116,7 @@
                 <colgroup>
                     <col name="date" width="120" sortable sort-direction="desc" date-format='MM/DD/YYYY'/>
                     <col name="merchant" flex="1" min-width="145" sortable/>
-                    <col name="total" width="90" sortable currency-format/>
+                    <col name="total" width="100" sortable numeral-format="$0,0.00"/>
                     <col name="status" width="120" sortable/>
                     <col name="comment" flex="2" min-width="260" sortable/>
                 </colgroup>
@@ -177,26 +177,22 @@
 
                 grid.then(function() {
                     let columns = grid.querySelectorAll('colgroup col');
-                    
-                    for (var index of columns) {
-
-                      if (index.hasAttribute('date-format')) {
+                    columns.forEach((elem,index) => {
+                      if (elem.hasAttribute('date-format')) {
                         grid.columns[index].renderer = function(cell) {
-                          console.log(index);
-                          console.log(columns[index].getAttribute('date-format')|| 'MM/DD/YYYY')
                           let mask = columns[index].getAttribute('date-format') ;
-                          console.log(mask);
                           cell.element.innerHTML = moment(cell.data).format(mask);
                         };
                       }
 
-                      if (columns[index].hasAttribute('currency-format')) {
+                      if (columns[index].hasAttribute('numeral-format')) {
                         grid.columns[index].renderer = function(cell) {
-                          let mask = columns[index].getAttribute('currency-format') || '$0,0.00';
+                          let mask = columns[index].getAttribute('numeral-format') || '0,0';
+                          console.log(mask);
                           cell.element.innerHTML = numeral(cell.data).format(mask);
                         };
                       }
-                    }
+                    });
 
                     // grid.columns[2].renderer = function(cell) {
                     //     cell.element.innerHTML = '$' + cell.data.toFixed(2);
