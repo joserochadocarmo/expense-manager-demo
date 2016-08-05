@@ -2,8 +2,10 @@
 <link rel="import" href="../bower_components/vaadin-grid/vaadin-grid.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="moment-js.html">
-<link rel="import" href="numeral-js.html">
+<link rel="import" href="../custom-components/status-tag.html">
+<link rel="import" href="../utils/moment-js.html">
+<link rel="import" href="../utils/numeral-js.html">
+<link rel="import" href="../utils/lodash-js.html">
 <dom-module id="expenses-list">
     <template>
         <style>
@@ -69,6 +71,7 @@
         vaadin-grid /deep/ td.status-new {
             color: var(--accent-color);
             font-weight: 500;
+            text-transform: capitalize;
         }
 
         vaadin-grid /deep/ td.status-in_progress {
@@ -111,13 +114,14 @@
             transform: translateY(-25%);
         }
         </style>
+
         <vaadin-grid id="expenses" frozen-columns="1">
             <table>
                 <colgroup>
-                    <col name="date" width="120" sortable sort-direction="desc" date-format='MM/DD/YYYY'/>
+                    <col name="date" width="120" sortable sort-direction="desc" date-format/>
                     <col name="merchant" flex="1" min-width="145" sortable/>
                     <col name="total" width="100" sortable numeral-format="$0,0.00"/>
-                    <col name="status" width="120" sortable/>
+                    <col name="status" width="120" sortable status-tag/>
                     <col name="comment" flex="2" min-width="260" sortable/>
                 </colgroup>
             </table>
@@ -176,34 +180,31 @@
                 };
 
                 grid.then(function() {
-                    let columns = grid.querySelectorAll('colgroup col');
+                    var columns = grid.querySelectorAll('colgroup col');
                     columns.forEach((elem,index) => {
+
                       if (elem.hasAttribute('date-format')) {
                         grid.columns[index].renderer = function(cell) {
-                          let mask = columns[index].getAttribute('date-format') ;
-                          cell.element.innerHTML = moment(cell.data).format(mask);
+                          var mask = columns[index].getAttribute('date-format') || 'L';
+                          cell.element.textContent = moment(cell.data).format(mask);
                         };
                       }
 
                       if (columns[index].hasAttribute('numeral-format')) {
                         grid.columns[index].renderer = function(cell) {
-                          let mask = columns[index].getAttribute('numeral-format') || '0,0';
-                          console.log(mask);
-                          cell.element.innerHTML = numeral(cell.data).format(mask);
+                          var mask = columns[index].getAttribute('numeral-format') || '0,0';
+                          cell.element.textContent = numeral(cell.data).format(mask);
                         };
                       }
+
+                      if (columns[index].hasAttribute('status-tag')) {
+                        grid.columns[index].renderer = function(cell) { 
+                            var content = _.lowerCase(cell.data);
+                            cell.element.innerHTML = "<status-tag class-name='"+content+"'>"+content+"</status-tag>";
+                        };
+                      }
+
                     });
-
-                    // grid.columns[2].renderer = function(cell) {
-                    //     cell.element.innerHTML = '$' + cell.data.toFixed(2);
-                    // };
-                    grid.columns[3].renderer = function(cell) {
-                        var status = cell.data.replace(/_/g, ' ');
-                        status = status.charAt(0).toUpperCase() + status.slice(1);
-                        cell.element.textContent = status;
-                    };
-
-                    grid.header.getCell(0, 2).className = 'total';
                 });
             },
 
@@ -296,7 +297,6 @@
                         return res;
                     });
                 }
-
                 grid.items = result;
             }
         });
