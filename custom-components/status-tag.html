@@ -1,21 +1,60 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <dom-module id="status-tag">
-    <template>
-        <style>
-        :host {
-            display: block;
-        }
-        </style>
-        <span class$='{{className}}'><content></content></span>
-    </template>
-    <script>
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      .label {
+        display: inline;
+        padding: .2em .6em .3em;
+        font-size: 80%;
+        font-weight: 700;
+        font-style: italic;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: .25em;
+        text-transform: capitalize;
+      }
+
+      span.status-new {
+        /*color: var(--accent-color);*/
+        color: #fff;
+        background-color: #777;
+      }
+
+      span.status-in_progress {
+        color: #fff;
+        background-color: #f0ad4e;
+      }
+
+      span.status-canceled {
+        color: #fff;
+        background-color: #d9534f;
+      }
+
+      span.status-completed {
+        color: #fff;
+        background-color: #5cb85c;
+      }
+
+    </style>
+    <span class$='label status-{{className}}' style$="background-color:{{color}};"><content></content></span>
+  </template>
+  <script>
     Polymer({
-        is: 'status-tag',
-        properties:{
-	        className: {
-	            type: String
-	        }
+      is: 'status-tag',
+      properties: {
+        className: {
+          type: String
+        },
+        color: {
+          type: String
         }
+      }
     });
-    </script>
+  </script>
 </dom-module>

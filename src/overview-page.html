@@ -105,13 +105,11 @@
       }
     </style>
 
-    <vaadin-pouchdb id="db" dbname="{{dbLocal}}" remote="{{dbRemote}}" data="{{expenses}}" status="{{status}}"></vaadin-pouchdb>
+    <vaadin-pouchdb id="db" dbname="labmic" remote="http://localhost:5984/labmic" data="{{expenses}}" status="{{status}}"></vaadin-pouchdb>
 
     <app-location route="{{route}}" use-hash-as-path></app-location>
     <app-route route="{{route}}" pattern="/:dbId" data="{{routeData}}" tail="{{subroute}}">
     </app-route>
-
-    <iron-ajax id="ajax" handle-as="json" on-response="_handleBackendResponse" on-error="_handleBackendError"></iron-ajax>
 
     <paper-header-panel>
       <paper-toolbar>
@@ -191,7 +189,7 @@
 
         ready: function() {
           Polymer.RenderStatus.afterNextRender(this, function() {
-            this._setupDB();
+            // this._setupDB();
           }.bind(this));
           this._db = this.$.db;
         },
@@ -206,7 +204,7 @@
               .reduce(function(a, b) {
                 return a + b;
               }, 0);
-            this.totalOwed = numeral(total).format('$0,0.00');
+            this.totalOwed = '$' + total.toFixed(2);
           }
         },
 
@@ -239,17 +237,17 @@
         },
 
         _setupDB: function() {
-          if (this.routeData && this.routeData.dbId) {
-            this.dbId = this.routeData.dbId;
-          }
-          if (this.dbId) {
-            this.dbLocal = 'db_' + this.dbId;
-            this.set('route.path', '/' + this.dbId);
-            this.$.ajax.url = 'https://expense-manager.demo.vaadin.com/api/db/' + this.dbId;
-          } else {
-            this.$.ajax.url = 'https://expense-manager.demo.vaadin.com/api/create';
-          }
-          this.$.ajax.generateRequest();
+          // if (this.routeData && this.routeData.dbId) {
+          //   this.dbId = this.routeData.dbId;
+          // }
+          // if (this.dbId) {
+          //   this.dbLocal = 'db_' + this.dbId;
+          //   this.set('route.path', '/' + this.dbId);
+          //   this.$.ajax.url = 'https://expense-manager.demo.vaadin.com/api/db/' + this.dbId;
+          // } else {
+          //   this.$.ajax.url = 'https://expense-manager.demo.vaadin.com/api/create';
+          // }
+          // this.$.ajax.generateRequest();
         },
 
         _update: function() {
@@ -261,30 +259,30 @@
 
         _handleBackendResponse: function(evt) {
           // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
-          var rsp = evt.detail.response;
-          if (rsp && rsp.backend_db_id) {
-            this.dbId = rsp.backend_db_id;
-            this.set('route.path', '/' + this.dbId);
-
-            // Setting these, makes couchdb connect to local & remote DB and start syncing
-            this.dbLocal = 'db_' + this.dbId;
-            this.dbRemote = rsp.couchdb_db_url;
-
-            if (rsp.new_db) {
-              this._showInfo = true;
-            }
-
-            // We update the entire UI on any change for simplicity.
-            this._db.changes(function() {
-              this._update();
-            }.bind(this));
-            // First hit
-            this._update();
-          } else {
-            this.dbId = null;
-            this.set('route.path', '');
-            this._setupDB();
-          }
+          // var rsp = evt.detail.response;
+          // if (rsp && rsp.backend_db_id) {
+          //   this.dbId = rsp.backend_db_id;
+          //   this.set('route.path', '/' + this.dbId);
+          //
+          //   // Setting these, makes couchdb connect to local & remote DB and start syncing
+          //   this.dbLocal = 'db_' + this.dbId;
+          //   this.dbRemote = rsp.couchdb_db_url;
+          //
+          //   if (rsp.new_db) {
+          //     this._showInfo = true;
+          //   }
+          //
+          //   // We update the entire UI on any change for simplicity.
+          //   this._db.changes(function() {
+          //     this._update();
+          //   }.bind(this));
+          //   // First hit
+          //   this._update();
+          // } else {
+          //   this.dbId = null;
+          //   this.set('route.path', '');
+          //   this._setupDB();
+          // }
         },
 
         _handleBackendError: function() {

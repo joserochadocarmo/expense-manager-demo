@@ -68,16 +68,9 @@
             flex-direction: row-reverse;
         }
 
-        vaadin-grid /deep/ td.status-new {
-            color: var(--accent-color);
-            font-weight: 500;
-            text-transform: capitalize;
-        }
-
-        vaadin-grid /deep/ td.status-in_progress {
-            font-weight: 500;
-            font-style: italic;
-            text-transform: capitalize;
+        status-tag /deep/ span.status-awaiting {
+          color: #fff;
+          background-color: #5cb85c;
         }
 
         vaadin-grid /deep/ td.comment {
@@ -114,7 +107,6 @@
             transform: translateY(-25%);
         }
         </style>
-
         <vaadin-grid id="expenses" frozen-columns="1">
             <table>
                 <colgroup>
@@ -170,13 +162,13 @@
                 }.bind(this));
 
                 grid.cellClassGenerator = function(cell) {
-                    if (cell.columnName === 'status') {
-                        return 'status-' + cell.data.replace(/ /g, '-').toLowerCase();
-                    } else if (cell.columnName === 'total') {
-                        return 'total';
-                    } else if (cell.columnName === 'comment') {
-                        return 'comment';
-                    }
+                    // if (cell.columnName === 'status') {
+                    //     return 'status-' + cell.data.replace(/ /g, '-').toLowerCase();
+                    // } else if (cell.columnName === 'total') {
+                    //     return 'total';
+                    // } else if (cell.columnName === 'comment') {
+                    //     return 'comment';
+                    // }
                 };
 
                 grid.then(function() {
@@ -198,9 +190,10 @@
                       }
 
                       if (columns[index].hasAttribute('status-tag')) {
-                        grid.columns[index].renderer = function(cell) { 
+                        grid.columns[index].renderer = function(cell) {
+                            console.log(cell);
                             var content = _.lowerCase(cell.data);
-                            cell.element.innerHTML = "<status-tag class-name='"+content+"'>"+content+"</status-tag>";
+                            cell.element.innerHTML = "<status-tag color='' class-name='"+cell.data+"'>"+content+"</status-tag>";
                         };
                       }
 

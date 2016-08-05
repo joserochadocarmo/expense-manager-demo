@@ -10,7 +10,6 @@
     "vaadin-combo-box": "^1.1.0",
     "vaadin-date-picker": "^1.1.0",
     "vaadin-upload": "^1.1.0",
-    "vaadin-pouchdb": "manolo/vaadin-pouchdb#em",
     "iron-a11y-keys": "polymerelements/iron-a11y-keys#^1.0.5",
     "paper-header-panel": "polymerelements/paper-header-panel#^1.1.6",
     "paper-toolbar": "polymerelements/paper-toolbar#^1.1.4",
@@ -24,7 +23,9 @@
     "font-awesome": "^4.6.3",
     "numeral": "^1.5.3",
     "moment": "^2.14.1",
-    "lodash": "^4.14.1"
+    "lodash": "^4.14.1",
+    "pouchdb": "^5.4.5",
+    "vaadin-pouchdb": "^0.0.2"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
