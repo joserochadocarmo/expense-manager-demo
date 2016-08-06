@@ -30,6 +30,15 @@ You need polymer-cli installed to build the app `npm install -g polymer-cli`.
 ## Other build targets
 You can build the app with `polymer build`. Other options are listed in the [Polymer CLI](https://www.polymer-project.org/1.0/docs/tools/polymer-cli) documentation.
 
+## TODO
+Component Form
+http://codepen.io/GrandvincentMarion/pen/KpmgOe/
+
+Toaste Component
+http://codeseven.github.io/toastr/demo.html
+
+Ladda Button
+https://github.com/hakimel/Ladda
 
 ## Note
 The demo uses [Vaadin Charts](https://vaadin.com/charts), which will ask for a license. You can close the window to try out the app without a license.
